@@ -13,6 +13,13 @@ pipeline {
           steps {
             sh "mvn test"
           }
+// this is added as a part of jacoco test          
+          post {
+            always {
+              junit 'target/surefire-reports/*.xml'
+              jacoco execPattern: 'target/jacoco.exec'
+            }
+          }
       }   
     }
 }
