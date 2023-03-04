@@ -21,5 +21,15 @@ pipeline {
             }
           }
       }   
+// added as a part of docker image build and push
+      stage('Docker Build and Push') {
+        steps {
+          withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
+            sh 'printenv'
+            sh 'sudo docker build -t shahabuddin7/numericapp:""$GIT_COMMIT"" .'
+            sh 'docker push shahabuddin7/numericapp:""$GIT_COMMIT""'
+          }
+        }
+    }
     }
 }
