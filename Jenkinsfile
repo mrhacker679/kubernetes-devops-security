@@ -61,7 +61,7 @@ pipeline {
         }
       }
       }
-    }
+
 
 
 // added as a part of docker image build and push
