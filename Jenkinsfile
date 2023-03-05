@@ -14,12 +14,12 @@ pipeline {
             sh "mvn test"
           }
 // this is added as a part of jacoco test          
-          post {
-            always {
-              junit 'target/surefire-reports/*.xml'
-              jacoco execPattern: 'target/jacoco.exec'
-            }
-          }
+          // post {
+          //   always {
+          //     junit 'target/surefire-reports/*.xml'
+          //     jacoco execPattern: 'target/jacoco.exec'
+          //   }
+          // }
       }   
 
 // addded as a part of mutation test from devsecops
@@ -27,11 +27,11 @@ pipeline {
       steps {
         sh "mvn org.pitest:pitest-maven:mutationCoverage"
       }
-      post{
-        always {
-          pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
-        }
-      }
+      // post{
+      //   always {
+      //     pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+      //   }
+      // }
     }
 
 // added as a part of the Sonarqube static code analysis
@@ -55,11 +55,11 @@ pipeline {
       steps {
         		sh "mvn dependency-check:check"
 			}
-      post {
-        always {
-          dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-        }
-      }
+      // post {
+      //   always {
+      //     dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+      //   }
+      // }
       }
 
 
@@ -84,4 +84,13 @@ pipeline {
         }
     }
 }
+
+  post {
+    always {
+          junit 'target/surefire-reports/*.xml'
+          jacoco execPattern: 'target/jacoco.exec'
+          pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+          dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+    }
+  }
 }
