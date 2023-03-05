@@ -23,7 +23,7 @@ pipeline {
       }   
 
 // addded as a part of mutation test from devsecops
-    stage('Unit Tests - JUnit and JaCoCo') {
+    stage('PIT Mutation Test') {
       steps {
         sh "mvn org.pitest:pitest-maven:mutationCoverage"
       }
