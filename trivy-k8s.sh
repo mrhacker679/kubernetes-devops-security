@@ -1,5 +1,6 @@
 #!/bin/bash
 #trivy-k8s-scan
+imageName=$(awk 'NR==1 {print $2}' Dockerfile)
 
 echo $imageName #getting Image name from env variable
 
