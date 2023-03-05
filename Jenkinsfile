@@ -9,7 +9,7 @@ pipeline {
             }
         }   
 // this stage has been added to test 
-      stage('Unit Tests') {
+      stage('Unit Tests - JUnit and JaCoCo') {
           steps {
             sh "mvn test"
           }
@@ -21,6 +21,20 @@ pipeline {
             }
           }
       }   
+
+// addded as a part of mutation test from devsecops
+    stage('Unit Tests - JUnit and JaCoCo') {
+      steps {
+        sh "mvn org.pitest:pitest-maven:mutationCoverage"
+      }
+      post{
+        always {
+          pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+        }
+      }
+    }
+
+
 // added as a part of docker image build and push
       stage('Docker Build and Push') {
         steps {
