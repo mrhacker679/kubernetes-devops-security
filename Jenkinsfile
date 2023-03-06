@@ -84,6 +84,17 @@ pipeline {
           }
         }
     }
+
+// added as a part of opa conftest for kubernetes manifests
+    stage('Vulnerability Scan - Kubernetes') {
+      steps {
+        parallel(
+          "OPA Scan": {
+            sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+          }
+        )
+      }
+    }
 // added as a part of first k8s deployment
       stage('Kubernetes Deployment - Dev') {
         steps {
