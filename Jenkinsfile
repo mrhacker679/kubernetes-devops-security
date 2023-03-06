@@ -1,6 +1,16 @@
 pipeline {
   agent any
 
+    environment {
+    deploymentName = "devsecops"
+    containerName = "devsecops-container"
+    serviceName = "devsecops-svc"
+    imageName = "shahabuddin7/numericapp:${GIT_COMMIT}"
+    applicationURL="http://http://45.79.252.108/"
+    applicationURI="/increment/99"
+  }
+
+
   stages {
       stage('Build Artifact') {
             steps {
@@ -98,12 +108,20 @@ pipeline {
 // added as a part of first k8s deployment
       stage('Kubernetes Deployment - Dev') {
         steps {
-          withKubeConfig([credentialsId: 'kubeconfig']){
-            sh "sed -i 's#replace#shahabuddin7/numericapp:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
-            sh "kubectl apply -f k8s_deployment_service.yaml"
+          parallel(
+            "Deployment": {
+              withKubeConfig([credentialsId: 'kubeconfig']){
+                // sh "sed -i 's#replace#shahabuddin7/numericapp:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
+                // sh "kubectl apply -f k8s_deployment_service.yaml"
+                sh "bash k8s-deployment.sh"
         }
+        },
+        "Rollout Status": {
+            withKubeConfig([credentialsId: 'kubeconfig']){
+              sh "bash k8s-deployment-rollout-status.sh"
         }
     }
+  )
 }
 
   post {
