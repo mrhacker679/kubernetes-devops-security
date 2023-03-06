@@ -118,7 +118,7 @@ pipeline {
         },
         "Rollout Status": {
             withKubeConfig([credentialsId: 'kubeconfig']){
-              sh "kubectl rollout status deploy/devsecops"
+              sh "bash k8s-deployment-rollout-status.sh"
         }
     }
   )
