@@ -124,7 +124,7 @@ pipeline {
   )
   }
 }
-
+  }
   post {
     always {
           junit 'target/surefire-reports/*.xml'
@@ -133,5 +133,4 @@ pipeline {
           dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
     }
   }
-}
 }
