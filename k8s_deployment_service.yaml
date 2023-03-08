@@ -18,6 +18,7 @@ spec:
       volumes:
       - name: vol
         emptyDir: {}
+      serviceAccountName: default  
       containers:
       - image: replace
         name: devsecops-container
